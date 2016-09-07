@@ -31,7 +31,7 @@ The bot is not perfect and is still in very early alpha. It only gets the first 
 
 ---
 Examples:
-
+```
 Cody S [2:21 PM]  
 @mtgcardbot fireball
 
@@ -44,9 +44,9 @@ Fireball deals X damage divided evenly, rounded down, among any number of target
 Fireball costs :m1: more to cast for each target beyond the first.
 
 http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=197&type=card
-
+```
 ---
-
+```
 Cody S [2:23 PM]  
 @mtgcardbot set="ktk" cmc="4" subtypes="warrior"
 
@@ -70,9 +70,9 @@ Common KTK
 :m1::mw:: Unyielding Krumar gains first strike until end of turn.
 _"The man whom I call father killed the orc who sired me, offering his world and his blade in return."_
 http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=386710&type=card (135KB)
-
+```
 ---
-
+```
 Cody S [2:24 PM]  
 I finally got my [[elesh norn]] for my modern deck
 
@@ -85,3 +85,4 @@ Vigilance
 Other creatures you control get +2/+2.
 Creatures your opponents control get -2/-2.
 _"The Gitaxians whisper among themselves of other worlds. If they exist, we must bring Phyrexia's magnificence to them."_
+```
