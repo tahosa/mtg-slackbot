@@ -5,8 +5,10 @@ from slackclient import SlackClient
 from mtgsdk import Card
 from mtgsdk import Set
 
+# Initialize the client
 sc = SlackClient( private.SLACK_TOKEN )
 
+## FORMATTING FUNCTIONS
 def format_cost( cost ):
 	if cost is not None:
 		ret = cost.replace( '{', ':m' ).replace( '}', ':' )
@@ -35,19 +37,22 @@ def format_link( link ):
 		return fmt_string
 	return link
 
-def get_get_cards( card_name='', card_set='', card_mana_cost='', card_cmc='', card_colors='', \
+## LOGIC FUNCTIONS
+# Wrapper to perform the actual search and return the results
+def get_cards( card_name='', card_set='', card_mana_cost='', card_cmc='', card_colors='', \
 	card_supertypes='', card_type='', card_subtypes='', card_rarity='', card_power='', card_toughness='' ):
 	return Card.where( name=card_name, set=card_set, mana_cost=card_mana_cost, cmc=card_cmc, \
 		colors=card_colors, supertypes=card_supertypes, type=card_type, subtypes=card_subtypes, \
 		rarity=card_rarity, power=card_power, toughness=card_toughness).all()
 
-def get_cards( card_name='', card_set='', card_mana_cost='', card_cmc='', card_colors='', \
+# Peform the query and return the cards as an array of formatted strings
+def get_formatted_cards( card_name='', card_set='', card_mana_cost='', card_cmc='', card_colors='', \
 	card_supertypes='', card_type='', card_subtypes='', card_rarity='', card_power='', card_toughness='' ):
 	responses = []
 	unique_cards = []
-	cards = Card.where( name=card_name, set=card_set, mana_cost=card_mana_cost, cmc=card_cmc, \
-		colors=card_colors, supertypes=card_supertypes, type=card_type, subtypes=card_subtypes, \
-		rarity=card_rarity, power=card_power, toughness=card_toughness).all()
+	cards = get_cards( card_name, card_set, card_mana_cost, card_cmc, \
+		card_colors, card_supertypes, card_type, card_subtypes, \
+		card_rarity, card_power, card_toughness)
 	for card in cards:
 		if card.name in unique_cards:
 			continue
@@ -61,6 +66,7 @@ def get_cards( card_name='', card_set='', card_mana_cost='', card_cmc='', card_c
 		responses.append( "\n".join([nameline, typeline, raresetline, textline, flavorline, linkline]) )
 	return responses
 
+# Parser to understand the rtm output the bot sees and only do something if it's @bot or [[something]]
 def parse_input( slack_rtm_output ):
 	output_list = slack_rtm_output
 	if output_list and len(output_list) > 0:
@@ -72,6 +78,7 @@ def parse_input( slack_rtm_output ):
 				return output['text'].split('[[')[1].split(']')[0].strip().lower(), output['channel']
 	return None, None
 
+# Turn an advanced query into a dictionary we can use
 def parse_advanced( command ):
 	cmd_dict = dict()
 	commands = command.split('\" ')
@@ -85,6 +92,7 @@ def parse_advanced( command ):
 		cmd_dict[param] = args
 	return cmd_dict
 
+# Use a dictionary of arguments to perform the search
 def adv_get_cards( param_dict ):
 	args_dict = dict()
 	for param in settings.PARAM_LIST:
@@ -92,11 +100,12 @@ def adv_get_cards( param_dict ):
 			args_dict[param] = param_dict[param]
 		except KeyError:
 			args_dict[param] = ''
-	return get_cards( args_dict['name'], args_dict['set'], args_dict['cost'], \
+	return get_formatted_cards( args_dict['name'], args_dict['set'], args_dict['cost'], \
 		args_dict['cmc'], args_dict['colors'], args_dict['supertypes'], \
 		args_dict['type'], args_dict['subtypes'], args_dict['rarity'], \
 		args_dict['power'], args_dict['toughness'] )
 
+# Logic for acting on the basic commands and returns a response to the channel passed in
 def handle_command( command, channel ):
 	help = False
 	response = "If you can read this, something went wrong."
@@ -113,7 +122,7 @@ def handle_command( command, channel ):
 		else:
 			card = command
 			set = ''
-		cards = get_cards( card, set )
+		cards = get_formatted_cards( card, set )
 	if cards is None or len(cards) < 1:
 		if help is False:
 			response = "No cards matching that search."
@@ -125,11 +134,13 @@ def handle_command( command, channel ):
 	sc.api_call( "chat.postMessage", channel=channel, \
 		text=response, as_user=True )
 
-if sc.rtm_connect():
-	while True:
-		command, channel = parse_input( sc.rtm_read() )
-		if command and channel:
-			handle_command( command, channel )
-		time.sleep(settings.SLEEP_TIME)
-else:
-	print ("Connection Failed")
+## Main function
+if __name__ == "__main__":
+	if sc.rtm_connect():
+		while True:
+			command, channel = parse_input( sc.rtm_read() )
+			if command and channel:
+				handle_command( command, channel )
+			time.sleep(settings.SLEEP_TIME)
+	else:
+		print ("Connection Failed")
