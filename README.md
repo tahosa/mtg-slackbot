@@ -46,42 +46,43 @@ Fireball costs :m1: more to cast for each target beyond the first.
 http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=197&type=card
 ```
 ---
+```
+Cody S [2:23 PM]  
+@mtgcardbot set="ktk" cmc="4" subtypes="warrior"
 
->Cody S [2:23 PM]  
->@mtgcardbot set="ktk" cmc="4" subtypes="warrior"
+MTGCardBotBOT [2:23 PM]  
+3 results
+Timely Hordemate  :m3::mw:
+Creature — Human Warrior
+Uncommon KTK
+Raid — When Timely Hordemate enters the battlefield, if you attacked with a creature this turn, return target creature card with converted mana cost 2 or less from your graveyard to the battlefield.
 
->MTGCardBotBOT [2:23 PM]  
->3 results
->Timely Hordemate  :m3::mw:
->Creature — Human Warrior
->Uncommon KTK
->Raid — When Timely Hordemate enters the battlefield, if you attacked with a creature this turn, return target creature card with converted mana cost 2 or less from your graveyard to the battlefield.
->
->http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=386699&type=card (126KB) 
->Bellowing Saddlebrute  :m3::mb:
->Creature — Orc Warrior
->Uncommon KTK
->Raid — When Bellowing Saddlebrute enters the battlefield, you lose 4 life unless you attacked with a creature this turn.
->
->http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=386488&type=card (134KB) 
->Unyielding Krumar  :m3::mb:
->Creature — Orc Warrior
->Common KTK
->:m1::mw:: Unyielding Krumar gains first strike until end of turn.
->_"The man whom I call father killed the orc who sired me, offering his world and his blade in return."_
->http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=386710&type=card (135KB)
+http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=386699&type=card (126KB) 
+Bellowing Saddlebrute  :m3::mb:
+Creature — Orc Warrior
+Uncommon KTK
+Raid — When Bellowing Saddlebrute enters the battlefield, you lose 4 life unless you attacked with a creature this turn.
 
+http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=386488&type=card (134KB) 
+Unyielding Krumar  :m3::mb:
+Creature — Orc Warrior
+Common KTK
+:m1::mw:: Unyielding Krumar gains first strike until end of turn.
+_"The man whom I call father killed the orc who sired me, offering his world and his blade in return."_
+http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=386710&type=card (135KB)
+```
 ---
+```
+Cody S [2:24 PM]  
+I finally got my [[elesh norn]] for my modern deck
 
->Cody S [2:24 PM]  
->I finally got my [[elesh norn]] for my modern deck
-
->MTGCardBotBOT [2:24 PM]  
->1 results
->Elesh Norn, Grand Cenobite  :m5::mw::mw:
->Legendary Creature — Praetor
->Special pJGP
->Vigilance
->Other creatures you control get +2/+2.
->Creatures your opponents control get -2/-2.
->_"The Gitaxians whisper among themselves of other worlds. If they exist, we must bring Phyrexia's magnificence to them."_
+MTGCardBotBOT [2:24 PM]  
+1 results
+Elesh Norn, Grand Cenobite  :m5::mw::mw:
+Legendary Creature — Praetor
+Special pJGP
+Vigilance
+Other creatures you control get +2/+2.
+Creatures your opponents control get -2/-2.
+_"The Gitaxians whisper among themselves of other worlds. If they exist, we must bring Phyrexia's magnificence to them."_
+```
