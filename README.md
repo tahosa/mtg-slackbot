@@ -13,9 +13,8 @@ The bot will respond to mention queries and do a pretty simple case-insensative 
 Notes:
 The bot is not perfect and is still in very early alpha. It only gets the first copy of any given card it finds and returns that one, which sometimes means promos or alpha version. It does return the oracle text, but the image might be weird. Sometimes it won't get the image. Sometimes it will hang on a search. Sometimes it's dumb. Use at your own risk.
 
-Advanced Search Keys:
-| Key  |
-|------|
+| Advanced Search Keys  |
+| ---- |
 | name |
 | set  |
 | cost* |
