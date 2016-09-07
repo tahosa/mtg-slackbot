@@ -27,7 +27,7 @@ The bot is not perfect and is still in very early alpha. It only gets the first 
 | power |
 | toughness |
 
-* - still not fully tested
+\* - still not fully tested
 
 ---
 Examples:
