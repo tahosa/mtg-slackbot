@@ -31,19 +31,20 @@ The bot is not perfect and is still in very early alpha. It only gets the first 
 
 ---
 Examples:
->Cody S [2:21 PM]  
->@mtgcardbot fireball
+```
+Cody S [2:21 PM]  
+@mtgcardbot fireball
 
->MTGCardBotBOT [2:21 PM]  
->1 results
->Fireball  :mx::mr:
->Sorcery
->Common LEA
->Fireball deals X damage divided evenly, rounded down, among any number of target creatures and/or players.
->Fireball costs :m1: more to cast for each target beyond the first.
->
->http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=197&type=card
+MTGCardBotBOT [2:21 PM]  
+1 results
+Fireball  :mx::mr:
+Sorcery
+Common LEA
+Fireball deals X damage divided evenly, rounded down, among any number of target creatures and/or players.
+Fireball costs :m1: more to cast for each target beyond the first.
 
+http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=197&type=card
+```
 ---
 
 >Cody S [2:23 PM]  
