@@ -1,6 +1,7 @@
-
+# Bot Name
 BOT_NAME = 'MTGCardBot'
 
+# Bot's unique ID (google it)
 BOT_ID = 'U2660SL06'
 
 AT_BOT = '<@' + BOT_ID + '>'
