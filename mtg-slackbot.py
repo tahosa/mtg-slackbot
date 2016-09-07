@@ -1,5 +1,4 @@
 import time
-import re
 import private
 import settings
 from slackclient import SlackClient
