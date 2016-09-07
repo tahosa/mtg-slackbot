@@ -32,7 +32,7 @@ def format_flavor( text ):
 	return fmt_string
 
 def format_link( link ):
-	fmt_string = ""
+	fmt_string = ''
 	if link is None:
 		return fmt_string
 	return link
@@ -43,7 +43,7 @@ def get_cards( card_name='', card_set='', card_mana_cost='', card_cmc='', card_c
 	card_supertypes='', card_type='', card_subtypes='', card_rarity='', card_power='', card_toughness='' ):
 	return Card.where( name=card_name, set=card_set, mana_cost=card_mana_cost, cmc=card_cmc, \
 		colors=card_colors, supertypes=card_supertypes, type=card_type, subtypes=card_subtypes, \
-		rarity=card_rarity, power=card_power, toughness=card_toughness).all()
+		rarity=card_rarity, power=card_power, toughness=card_toughness ).all()
 
 # Peform the query and return the cards as an array of formatted strings
 def get_formatted_cards( card_name='', card_set='', card_mana_cost='', card_cmc='', card_colors='', \
@@ -52,43 +52,43 @@ def get_formatted_cards( card_name='', card_set='', card_mana_cost='', card_cmc=
 	unique_cards = []
 	cards = get_cards( card_name, card_set, card_mana_cost, card_cmc, \
 		card_colors, card_supertypes, card_type, card_subtypes, \
-		card_rarity, card_power, card_toughness)
+		card_rarity, card_power, card_toughness )
 	for card in cards:
 		if card.name in unique_cards:
 			continue
 		nameline = format_nameline( card.name, card.mana_cost )
-		typeline = "{0}".format( card.type )
-		raresetline = "{0} {1}".format(card.rarity, card.set)
-		textline = "{0}".format(format_cost( card.text ))
-		flavorline = "{0}".format(format_flavor(card.flavor))
-		linkline = "{0}".format(format_link(card.image_url))
+		typeline = '{0}'.format( card.type )
+		raresetline = '{0} {1}'.format( card.rarity, card.set )
+		textline = '{0}'.format( format_cost( card.text ) )
+		flavorline = '{0}'.format( format_flavor( card.flavor ) )
+		linkline = '{0}'.format( format_link( card.image_url ) )
 		unique_cards.append( card.name )
-		responses.append( "\n".join([nameline, typeline, raresetline, textline, flavorline, linkline]) )
+		responses.append( '\n'.join( [nameline, typeline, raresetline, textline, flavorline, linkline] ) )
 	return responses
 
 # Parser to understand the rtm output the bot sees and only do something if it's @bot or [[something]]
 def parse_input( slack_rtm_output ):
 	output_list = slack_rtm_output
-	if output_list and len(output_list) > 0:
+	if output_list and len( output_list ) > 0:
 		for output in output_list:
 			if output and 'text' in output and settings.AT_BOT in output['text']:
-				return output['text'].split(settings.AT_BOT)[1].strip().lower(), \
+				return output['text'].split( settings.AT_BOT )[1].strip().lower(), \
 					output['channel']
 			elif output and 'text' in output and '[[' in output['text']:
-				return output['text'].split('[[')[1].split(']')[0].strip().lower(), output['channel']
+				return output['text'].split( '[[' )[1].split( ']' )[0].strip().lower(), output['channel']
 	return None, None
 
 # Turn an advanced query into a dictionary we can use
 def parse_advanced( command ):
 	cmd_dict = dict()
-	commands = command.split('\" ')
+	commands = command.split( '\" ' )
 	for cmd in commands:
-		if cmd.find(':') > -1:
+		if cmd.find( ':' ) > -1:
 			delim = ':'
-		elif cmd.find('=') > -1:
+		elif cmd.find( '=' ) > -1:
 			delim = '='
 		param, args = cmd.split( delim, 1 )
-		args = args.replace('\"', '')
+		args = args.replace( '\"', '' )
 		cmd_dict[param] = args
 	return cmd_dict
 
@@ -108,8 +108,8 @@ def adv_get_cards( param_dict ):
 # Logic for acting on the basic commands and returns a response to the channel passed in
 def handle_command( command, channel ):
 	help = False
-	response = "If you can read this, something went wrong."
-	if command.find('\"') > -1:
+	response = 'If you can read this, something went wrong.'
+	if command.find( '\"' ) > -1:
 		cmd_dict = parse_advanced( command )
 		cards = adv_get_cards( cmd_dict )
 	elif command.startswith( 'help' ):
@@ -117,30 +117,30 @@ def handle_command( command, channel ):
 		cards = None
 		help = True
 	else:
-		if command.find('|') > -1:
-			card, set = command.split('|', 1)
+		if command.find( '|' ) > -1:
+			card, set = command.split( '|', 1 )
 		else:
 			card = command
 			set = ''
 		cards = get_formatted_cards( card, set )
-	if cards is None or len(cards) < 1:
+	if cards is None or len( cards ) < 1:
 		if help is False:
-			response = "No cards matching that search."
-	elif len(cards) > settings.MAX_CARDS:
-		response = "More than {0} cards found, please be more specific.".format(settings.MAX_CARDS)
+			response = 'No cards matching that search.'
+	elif len( cards ) > settings.MAX_CARDS:
+		response = 'More than {0} cards found, please be more specific.'.format( settings.MAX_CARDS )
 	else:
-		cards.insert(0, "{0} results".format( len(cards) ) )
-		response = "\n".join( cards )
-	sc.api_call( "chat.postMessage", channel=channel, \
+		cards.insert( 0, '{0} results'.format( len( cards ) ) )
+		response = '\n'.join( cards )
+	sc.api_call( 'chat.postMessage', channel=channel, \
 		text=response, as_user=True )
 
 ## Main function
-if __name__ == "__main__":
+if __name__ == '__main__':
 	if sc.rtm_connect():
 		while True:
 			command, channel = parse_input( sc.rtm_read() )
 			if command and channel:
 				handle_command( command, channel )
-			time.sleep(settings.SLEEP_TIME)
+			time.sleep( settings.SLEEP_TIME )
 	else:
-		print ("Connection Failed")
+		print ( 'Connection Failed' )
