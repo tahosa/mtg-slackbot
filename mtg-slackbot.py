@@ -6,6 +6,7 @@ import logging
 from slackclient import SlackClient
 from mtgsdk import Card
 from mtgsdk import Set
+from mtgsdk import MtgException
 
 # Initialize the client
 sc = SlackClient( private.SLACK_TOKEN )
@@ -13,7 +14,7 @@ sc = SlackClient( private.SLACK_TOKEN )
 ## FORMATTING FUNCTIONS
 def format_cost( cost ):
 	if cost is not None:
-		ret = cost.replace( '{', ':m' ).replace( '}', ':' )
+		ret = cost.replace( '{', settings.EMOJI_PREFIX ).replace( '}', settings.EMOJI_SUFFIX )
 	else:
 		ret = cost
 	return ret
@@ -43,9 +44,14 @@ def format_link( link ):
 # Wrapper to perform the actual search and return the results
 def get_cards( card_name='', card_set='', card_mana_cost='', card_cmc='', card_colors='', \
 	card_supertypes='', card_type='', card_subtypes='', card_rarity='', card_power='', card_toughness='' ):
-	return Card.where( name=card_name, set=card_set, mana_cost=card_mana_cost, cmc=card_cmc, \
-		colors=card_colors, supertypes=card_supertypes, type=card_type, subtypes=card_subtypes, \
-		rarity=card_rarity, power=card_power, toughness=card_toughness ).all()
+	try:
+		cards = Card.where( name=card_name, set=card_set, mana_cost=card_mana_cost, cmc=card_cmc, \
+			colors=card_colors, supertypes=card_supertypes, type=card_type, subtypes=card_subtypes, \
+			rarity=card_rarity, power=card_power, toughness=card_toughness ).all()
+	except MtgException as err:
+		cards = []
+		logging.critical('Error with card search:\n{}'.format(err))
+	return cards
 
 # Peform the query and return the cards as an array of formatted strings
 def get_formatted_cards( card_name='', card_set='', card_mana_cost='', card_cmc='', card_colors='', \
@@ -135,7 +141,7 @@ def handle_command( command, channel ):
 		if help is False:
 			response = 'No cards matching that search.'
 	elif len( cards ) > settings.MAX_CARDS:
-		response = 'More than {0} cards found, please be more specific.'.format( settings.MAX_CARDS )
+		response = '{} results.\nMore than {} cards found, please be more specific.'.format( len(cards), settings.MAX_CARDS )
 	else:
 		cards.insert( 0, '{0} results'.format( len( cards ) ) )
 		response = '\n'.join( cards )
