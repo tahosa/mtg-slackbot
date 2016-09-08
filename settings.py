@@ -1,9 +1,6 @@
-# Bot Name
-BOT_NAME = 'MTGCardBot'
+from private import BOT_NAME, BOT_ID
 
-# Bot's unique ID (see script)
-BOT_ID = 'U2660SL06'
-
+# Search text to match for messages to the bot
 AT_BOT = '<@' + BOT_ID + '>'
 
 # How long to wait between checking slack
