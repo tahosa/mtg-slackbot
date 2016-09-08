@@ -140,7 +140,7 @@ def handle_command( command, channel ):
 		cards.insert( 0, '{0} results'.format( len( cards ) ) )
 		response = '\n'.join( cards )
 
-    logging.debug( 'Posting {} to #{}'.format( response, channel ) )
+	logging.debug( 'Posting {} to #{}'.format( response, channel ) )
 	sc.api_call( 'chat.postMessage', channel=channel, \
 		text=response, as_user=True )
 
@@ -149,7 +149,7 @@ if __name__ == '__main__':
 	if 'LOG_LEVEL' in environ:
 		logging.basicConfig( level=int( environ['LOG_LEVEL'] ) )
 	
-	logging.info('Starting application');
+	logging.info( 'Starting application' );
 	logging.info( 'Connecting to Slack...' );
 
 	if sc.rtm_connect():
