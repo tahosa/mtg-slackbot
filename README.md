@@ -1,16 +1,22 @@
 # mtg-slackbot
 Something like a basic bot to attach to a slack server and respond to Magic: the Gathering based queries.
 
-Requires:
+#### Requires:
 * Python 3.4+
 * mtgsdk
 * slackclient
 * Your own SLACK_TOKEN for your own bot in your own private.py
 
-Basic Use:
+#### Installation & Running:
+#####  Linux:
+To install the bot on an ubuntu-style system as a daemon, refer to the `install.sh` bash script. 
+#####  Windows:
+To run on windows it is easiest to use `virtualenv` to create a simple virtal python world then run `pip install -r requirements.txt` to make sure you have all the needed python libraries. Once you've done this make a copy of `private.py.example` called `private.py` and either add your slackbot's token, name, and userid to the file or set them as environment variables using `export SLACK_TOKEN=<token>` etc. To find your `BOT_ID` run the `find_user_id.py` script.
+
+#### Basic Use:
 The bot will respond to mention queries and do a pretty simple case-insensative search on card names. It also will respond to wiki/subreddit-bot style mid-sentence queries surrounded by [[<name>]]. Additionally, there is an advanced search feature that takes specific keys and will search with them. It does some formatting of the result(s) it returns, and does a substitution of the {} for :: to allow the use of slack's custom emoji to make the results look even nicer.
 
-Notes:
+#### Notes:
 The bot is not perfect and is still in very early alpha. It only gets the first copy of any given card it finds and returns that one, which sometimes means promos or alpha version. It does return the oracle text, but the image might be weird. Sometimes it won't get the image. Sometimes it will hang on a search. Sometimes it's dumb. Use at your own risk.
 
 | Advanced Search Keys  |
@@ -19,10 +25,10 @@ The bot is not perfect and is still in very early alpha. It only gets the first 
 | set  |
 | cost* |
 | cmc  |
-| colors* |
+| colors |
 | supertypes* |
-| type* |
-| subtypes* |
+| type |
+| subtypes |
 | rarity |
 | power |
 | toughness |
