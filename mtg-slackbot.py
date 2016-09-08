@@ -76,7 +76,7 @@ def parse_input( slack_rtm_output ):
 	if output_list and len( output_list ) > 0:
 		for output in output_list:
 			logging.debug( output )
-			if output and 'teoxt' in output and settings.AT_BOT in output['text']:
+			if output and 'text' in output and settings.AT_BOT in output['text']:
 				search = output['text'].split( settings.AT_BOT )[1].strip().lower()
 				logging.debug('Bot DMed with term \'{}\' in #{}'.format(search, output['channel']))
 				return search, output['channel']
