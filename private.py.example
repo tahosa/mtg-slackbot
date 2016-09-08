@@ -1,0 +1,17 @@
+from os import environ
+
+if 'SLACK_TOKEN' in environ:
+	SLACK_TOKEN = environ['SLACK_TOKEN']
+else:
+	SLACK_TOKEN = '' # Add your bot's API token here
+
+if 'BOT_ID' in environ:
+	BOT_ID = environ['BOT_ID']
+else:
+	BOT_ID = '' # Add your bot's ID here; use find_user_id.py to get IDs
+
+if 'BOT_NAME' in environ:
+	BOT_NAME = environ['BOT_NAME']
+else:
+	BOT_NAME = '' # Add your bot's username here
+

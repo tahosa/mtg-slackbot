@@ -1,6 +1,8 @@
 import time
+from os import environ
 import private
 import settings
+import logging
 from slackclient import SlackClient
 from mtgsdk import Card
 from mtgsdk import Set
@@ -53,6 +55,8 @@ def get_formatted_cards( card_name='', card_set='', card_mana_cost='', card_cmc=
 	cards = get_cards( card_name, card_set, card_mana_cost, card_cmc, \
 		card_colors, card_supertypes, card_type, card_subtypes, \
 		card_rarity, card_power, card_toughness )
+	
+	logging.debug('Formatting {} cards'.format(len(cards)))
 	for card in cards:
 		if card.name in unique_cards:
 			continue
@@ -71,11 +75,15 @@ def parse_input( slack_rtm_output ):
 	output_list = slack_rtm_output
 	if output_list and len( output_list ) > 0:
 		for output in output_list:
-			if output and 'text' in output and settings.AT_BOT in output['text']:
-				return output['text'].split( settings.AT_BOT )[1].strip().lower(), \
-					output['channel']
+			logging.debug( output )
+			if output and 'teoxt' in output and settings.AT_BOT in output['text']:
+				search = output['text'].split( settings.AT_BOT )[1].strip().lower()
+				logging.debug('Bot DMed with term \'{}\' in #{}'.format(search, output['channel']))
+				return search, output['channel']
 			elif output and 'text' in output and '[[' in output['text']:
-				return output['text'].split( '[[' )[1].split( ']' )[0].strip().lower(), output['channel']
+				search = output['text'].split( '[[' )[1].split( ']' )[0].strip().lower()
+				logging.debug('Found wiki style card \'{}\' in #{}'.format(search, output['channel']))
+				return search, output['channel']
 	return None, None
 
 # Turn an advanced query into a dictionary we can use
@@ -131,11 +139,19 @@ def handle_command( command, channel ):
 	else:
 		cards.insert( 0, '{0} results'.format( len( cards ) ) )
 		response = '\n'.join( cards )
+
+    logging.debug( 'Posting {} to #{}'.format( response, channel ) )
 	sc.api_call( 'chat.postMessage', channel=channel, \
 		text=response, as_user=True )
 
 ## Main function
 if __name__ == '__main__':
+	if 'LOG_LEVEL' in environ:
+		logging.basicConfig( level=int( environ['LOG_LEVEL'] ) )
+	
+	logging.info('Starting application');
+	logging.info( 'Connecting to Slack...' );
+
 	if sc.rtm_connect():
 		while True:
 			command, channel = parse_input( sc.rtm_read() )
@@ -143,4 +159,4 @@ if __name__ == '__main__':
 				handle_command( command, channel )
 			time.sleep( settings.SLEEP_TIME )
 	else:
-		print ( 'Connection Failed' )
+		logging.critical( 'Connection Failed' )
