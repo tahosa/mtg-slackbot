@@ -5,6 +5,7 @@ user='mtgslackbot'
 prefix='/opt'
 systemd_dir='/etc/systemd/'
 create_user=1
+token_file=''
 
 # Parse command line args
 for i in "$@"; do
@@ -14,10 +15,12 @@ for i in "$@"; do
 		prefix="${i#*=}"
     	shift
     	;;
+		# Get the systemd directory
 		--systemd-dir=*)
 		systemd_dir="${i#*=}"
 		shift
         ;;
+		# Get the user to create as
 		-u=*|--no-create-user=*)
 		if [ -z "${i#*=}" ]; then
 			user='root'
@@ -27,6 +30,12 @@ for i in "$@"; do
 		fi
 		shift
 		;;
+		# Get the slack token file
+		--token-file=*)
+		token_file="${i#*=}"
+		shift
+		;;
+		# Print the help
 		-h|--help)
 		cat << EOM
 This script adds mtgslackbot as a service on your system using systemctl to
@@ -43,6 +52,9 @@ OPTIONS:
  -u=[user]                 mtgslackbot system account. If [user] is given, it
                            will own the service. Otherwise, the service will be
                            owned by and run as root (NOT RECOMMENDED)
+
+--token-file=[file]		Specify a file to read the slack token from (if not
+						   specified prompts user for token during install)
 
 -h --help                Show this help message
 EOM
@@ -72,9 +84,13 @@ pip install -r requirements.txt
 popd
 
 echo
-# Ask the user for environment info
-echo "Enter your Slack API token: "
-read SLACK_TOKEN
+if [[ $token_file -ne '' ]]; then
+	SLACK_TOKEN=`cat $token_file`
+else
+	# Ask the user for environment info
+	echo "Enter your Slack API token: "
+	read SLACK_TOKEN
+fi
 
 echo "Enter your bot's username: "
 read BOT_NAME
