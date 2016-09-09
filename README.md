@@ -32,6 +32,7 @@ The bot is not perfect and is still in very early alpha. It only gets the first 
 | rarity |
 | power |
 | toughness |
+| text |
 
 \* - still not fully tested
 

@@ -43,11 +43,11 @@ def format_link( link ):
 ## LOGIC FUNCTIONS
 # Wrapper to perform the actual search and return the results
 def get_cards( card_name='', card_set='', card_mana_cost='', card_cmc='', card_colors='', \
-	card_supertypes='', card_type='', card_subtypes='', card_rarity='', card_power='', card_toughness='' ):
+	card_supertypes='', card_type='', card_subtypes='', card_rarity='', card_power='', card_toughness='', card_text='' ):
 	try:
 		cards = Card.where( name=card_name, set=card_set, mana_cost=card_mana_cost, cmc=card_cmc, \
 			colors=card_colors, supertypes=card_supertypes, type=card_type, subtypes=card_subtypes, \
-			rarity=card_rarity, power=card_power, toughness=card_toughness ).all()
+			rarity=card_rarity, power=card_power, toughness=card_toughness, text=card_text ).all()
 	except MtgException as err:
 		cards = []
 		logging.critical('Error with card search:\n{}'.format(err))
@@ -55,12 +55,12 @@ def get_cards( card_name='', card_set='', card_mana_cost='', card_cmc='', card_c
 
 # Peform the query and return the cards as an array of formatted strings
 def get_formatted_cards( card_name='', card_set='', card_mana_cost='', card_cmc='', card_colors='', \
-	card_supertypes='', card_type='', card_subtypes='', card_rarity='', card_power='', card_toughness='' ):
+	card_supertypes='', card_type='', card_subtypes='', card_rarity='', card_power='', card_toughness='', card_text='' ):
 	responses = []
 	unique_cards = []
 	cards = get_cards( card_name, card_set, card_mana_cost, card_cmc, \
 		card_colors, card_supertypes, card_type, card_subtypes, \
-		card_rarity, card_power, card_toughness )
+		card_rarity, card_power, card_toughness, card_text )
 	
 	logging.debug('Formatting {} cards'.format(len(cards)))
 	for card in cards:
@@ -92,7 +92,7 @@ def parse_input( slack_rtm_output ):
 				for entry in searches:
 					if entry.find(']]') > -1:
 						strip_searches.append( entry.split(']]')[0] )
-				logging.debug('Found wiki style card(s) \'{}\' in #{}'.format(strip_search, output['channel']))
+				logging.debug('Found wiki style card(s) \'{}\' in #{}'.format(strip_searches, output['channel']))
 				return (strip_searches, output['channel'])
 	return ([], None)
 
@@ -121,7 +121,7 @@ def adv_get_cards( param_dict ):
 	return get_formatted_cards( args_dict['name'], args_dict['set'], args_dict['cost'], \
 		args_dict['cmc'], args_dict['colors'], args_dict['supertypes'], \
 		args_dict['type'], args_dict['subtypes'], args_dict['rarity'], \
-		args_dict['power'], args_dict['toughness'] )
+		args_dict['power'], args_dict['toughness'], args_dict['text'] )
 
 # Logic for acting on the basic commands and returns a response to the channel passed in
 def handle_command( command, channel ):
