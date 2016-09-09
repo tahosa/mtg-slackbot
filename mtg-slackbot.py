@@ -3,7 +3,6 @@ from os import environ
 import private
 import settings
 import logging
-import re
 from slackclient import SlackClient
 from mtgsdk import Card
 from mtgsdk import Set
