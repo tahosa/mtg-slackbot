@@ -3,6 +3,7 @@ from os import environ
 import private
 import settings
 import logging
+import re
 from slackclient import SlackClient
 from mtgsdk import Card
 from mtgsdk import Set
@@ -85,12 +86,16 @@ def parse_input( slack_rtm_output ):
 			if output and 'text' in output and settings.AT_BOT in output['text']:
 				search = output['text'].split( settings.AT_BOT )[1].strip().lower()
 				logging.debug('Bot DMed with term \'{}\' in #{}'.format(search, output['channel']))
-				return search, output['channel']
+				return ([search], output['channel'])
 			elif output and 'text' in output and '[[' in output['text']:
-				search = output['text'].split( '[[' )[1].split( ']' )[0].strip().lower()
-				logging.debug('Found wiki style card \'{}\' in #{}'.format(search, output['channel']))
-				return search, output['channel']
-	return None, None
+				strip_searches = []
+				searches = output['text'].split('[[')
+				for entry in searches:
+					if entry.find(']]') > -1:
+						strip_searches.append( entry.split(']]')[0] )
+				logging.debug('Found wiki style card(s) \'{}\' in #{}'.format(strip_search, output['channel']))
+				return (strip_searches, output['channel'])
+	return ([], None)
 
 # Turn an advanced query into a dictionary we can use
 def parse_advanced( command ):
@@ -160,9 +165,10 @@ if __name__ == '__main__':
 
 	if sc.rtm_connect():
 		while True:
-			command, channel = parse_input( sc.rtm_read() )
-			if command and channel:
-				handle_command( command, channel )
+			command_array, channel = parse_input( sc.rtm_read() )
+			if len(command_array) > 0:
+				for command in command_array:
+					handle_command( command, channel )
 			time.sleep( settings.SLEEP_TIME )
 	else:
 		logging.critical( 'Connection Failed' )
