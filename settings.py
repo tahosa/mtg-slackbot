@@ -11,7 +11,7 @@ MAX_CARDS = 10
 
 # Ordered list that the logic in the bot can take
 PARAM_LIST = [ 'name', 'set', 'cost', 'cmc', 'colors', 'supertypes', \
-'type', 'subtypes', 'rarity', 'power', 'toughness' ]
+'type', 'subtypes', 'rarity', 'power', 'toughness', 'text' ]
 
 # The help text
 HELP_TEXT = "```To use this bot simply metion it and give it a name to search like 'elesh norn' or a word to search on.\n" \
